@@ -1,0 +1,25 @@
+GET http://localhost:5038/todos
+
+###
+GET http://localhost:5038/todos/a9175be8-8054-4b22-a2ec-799771c60a89
+
+###
+POST http://localhost:5038/todos
+Content-Type: application/json
+
+{
+    "title":"new todo",
+    "completed":false
+}
+
+###
+PUT http://localhost:5038/todos/a9175be8-8054-4b22-a2ec-799771c60a89
+Content-Type: application/json
+
+{
+    "title":"new todo updated",
+    "completed":true
+}
+
+###
+DELETE  http://localhost:5038/todos/a9175be8-8054-4b22-a2ec-799771c60a89
