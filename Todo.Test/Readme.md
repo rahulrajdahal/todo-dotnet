@@ -8,7 +8,7 @@ Add Tasks to the list and check them off.
 
 ## Preview
 
-![Todo.API](./screenshots/todos-test.png)
+[![Todo.API](./screenshots/todos-test.png)](https://github.com/rahulrajdahal/todo-dotnet)
 
 ## 🏗 Development Guide
 
