@@ -1,17 +1,20 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using Newtonsoft.Json;
+using Todo.Api.Dtos;
 using Todo.Api.Entities;
 
 namespace Todo.Test;
 
 public class TodosTest
 {
+    readonly HttpClient client = new HttpClient();
+
     [Fact]
     public async Task GET_Todos_ReturnsOk()
     {
         // Arrange
-        var client = new HttpClient();
         client.BaseAddress = new Uri("http://localhost:5038");
 
         // Act
@@ -28,30 +31,127 @@ public class TodosTest
     public async Task POST_Todos_ReturnsCreated()
     {
         // Arrange
-        var client = new HttpClient();
         client.BaseAddress = new Uri("http://localhost:5038");
 
         // Act
-        var response = await client.PostAsJsonAsync("/todos", new TodoItem() { Title = "new todo test", Completed = false });
+        var response = await client.PostAsJsonAsync("/todos", new TodoItem() { Title = "new todo unit test", Completed = false });
         response.EnsureSuccessStatusCode();
         var responseData = await response.Content.ReadAsStringAsync();
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        Assert.Empty(responseData);
+        Assert.NotEmpty(responseData);
     }
+
 
     [Fact]
     public async Task GET_TodoWithId_ReturnsNotFound()
     {
         // Arrange
-        var client = new HttpClient();
         client.BaseAddress = new Uri("http://localhost:5038");
 
         // Act
-        var response = await client.GetAsync("/todos/someId");
+        var response = await client.GetAsync("/todos/somerandomId");
+        var responseData = await response.Content.ReadAsStringAsync();
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Empty(responseData);
+    }
+
+
+    [Fact]
+    public async Task GET_TodoWithId_ReturnsOKWithTodoItem()
+    {
+        // Arrange
+        client.BaseAddress = new Uri("http://localhost:5038");
+
+        var todosResponse = await client.GetAsync("/todos");
+        todosResponse.EnsureSuccessStatusCode();
+        var todosResponseData = await todosResponse.Content.ReadAsStringAsync();
+        List<TodoItem> todos = JsonConvert.DeserializeObject<List<TodoItem>>(todosResponseData)!;
+
+        string todoId = todos.Last().Id;
+
+        // Act
+        var response = await client.GetAsync($"/todos/{todoId}");
+        response.EnsureSuccessStatusCode();
+        var responseData = await response.Content.ReadAsStringAsync();
+        string id = JsonConvert.DeserializeObject<TodoItem>(responseData)!.Id!;
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(id, todoId);
+        Assert.NotEmpty(responseData);
+    }
+
+
+    [Fact]
+    public async Task PUT_TodoWithId_ReturnsNoContent()
+    {
+        // Arrange
+        client.BaseAddress = new Uri("http://localhost:5038");
+
+        var todosResponse = await client.GetAsync("/todos");
+        todosResponse.EnsureSuccessStatusCode();
+        var todosResponseData = await todosResponse.Content.ReadAsStringAsync();
+        List<TodoItem> todos = JsonConvert.DeserializeObject<List<TodoItem>>(todosResponseData)!;
+
+        string todoId = todos.Last().Id;
+
+        // Act
+        var response = await client.PutAsJsonAsync($"/todos/{todoId}", new TodoItem { Title = "new todo unit test update", Completed = true });
+        response.EnsureSuccessStatusCode();
+        var responseData = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Empty(responseData);
+    }
+
+    [Fact]
+    public async Task PATCH_TodoWithId_ReturnsNoContent()
+    {
+        // Arrange
+        client.BaseAddress = new Uri("http://localhost:5038");
+
+        var todosResponse = await client.GetAsync("/todos");
+        todosResponse.EnsureSuccessStatusCode();
+        var todosResponseData = await todosResponse.Content.ReadAsStringAsync();
+        List<TodoItem> todos = JsonConvert.DeserializeObject<List<TodoItem>>(todosResponseData)!;
+
+        string todoId = todos.Last().Id;
+
+        // Act
+        var response = await client.PatchAsJsonAsync($"/todos/{todoId}", new TodoItem { Title = "new todo unit test update patch" });
+        response.EnsureSuccessStatusCode();
+        var responseData = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Empty(responseData);
+    }
+
+    [Fact]
+    public async Task DELETE_TodoWithId_ReturnsNoContent()
+    {
+        // Arrange
+        client.BaseAddress = new Uri("http://localhost:5038");
+
+        var todosResponse = await client.GetAsync("/todos");
+        todosResponse.EnsureSuccessStatusCode();
+        var todosResponseData = await todosResponse.Content.ReadAsStringAsync();
+        List<TodoItem> todos = JsonConvert.DeserializeObject<List<TodoItem>>(todosResponseData)!;
+
+        string todoId = todos.Last().Id;
+
+        // Act
+        var response = await client.DeleteAsync($"/todos/{todoId}");
+        response.EnsureSuccessStatusCode();
+        var responseData = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Empty(responseData);
     }
 }
