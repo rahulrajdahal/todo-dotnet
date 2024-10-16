@@ -94,8 +94,7 @@ public class TodosTest
         todosResponse.EnsureSuccessStatusCode();
         var todosResponseData = await todosResponse.Content.ReadAsStringAsync();
         List<TodoItem> todos = JsonConvert.DeserializeObject<List<TodoItem>>(todosResponseData)!;
-
-        string todoId = todos.Last().Id;
+        string todoId = todos[todos.Count - 1].Id!;
 
         // Act
         var response = await client.PutAsJsonAsync($"/todos/{todoId}", new TodoItem { Title = "new todo unit test update", Completed = true });
@@ -138,8 +137,7 @@ public class TodosTest
         todosResponse.EnsureSuccessStatusCode();
         var todosResponseData = await todosResponse.Content.ReadAsStringAsync();
         List<TodoItem> todos = JsonConvert.DeserializeObject<List<TodoItem>>(todosResponseData)!;
-
-        string todoId = todos.Last().Id;
+        string todoId = todos[todos.Count - 1].Id!;
 
         // Act
         var response = await client.DeleteAsync($"/todos/{todoId}");
