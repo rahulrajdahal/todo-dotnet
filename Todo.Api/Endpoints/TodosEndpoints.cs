@@ -1,63 +1,44 @@
 using Microsoft.EntityFrameworkCore;
+using Todo.Api.Handlers;
 using Todo.Api.Data;
 using Todo.Api.Dtos;
 using Todo.Api.Entities;
 
 namespace Todo.Api.Endpoints;
 
+/// <summary>
+/// The endpoints for TodoItems
+/// </summary>
 public static class TodosEndpoints
 {
+    /// <summary>
+    /// Route Group for TodoItems
+    /// </summary>
+    /// <returns>The Route Group for TodosEndpoints</returns>
     public static RouteGroupBuilder MapTodosEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("todos");
+        RouteGroupBuilder? group = app.MapGroup("todos");
 
-        // GET 
-        group.MapGet("/", async (TodoContext dbContext) => await dbContext.Todos.ToListAsync());
+        // the TodoItem id
+        string id = "/{id}";
 
-        // GET with Id
-        group.MapGet("/{id}", async (string id, TodoContext dbContext) =>
-        {
-            TodoItem? todo = await dbContext.Todos.FindAsync(id);
+        // Get All Todos
+        group.MapGet("/", TodosHandlers.GetAllTodos);
 
-            return todo is null ? Results.NotFound() : Results.Ok(todo);
-        });
+        // Get a TodoItem with specified id.
+        group.MapGet(id, TodosHandlers.GetTodo);
 
-        // POST
-        group.MapPost("/", async (CreateTodoItemDto newTodo, TodoContext dbContext) =>
-        {
-            TodoItem todo = new TodoItem() { Title = newTodo.Title, Completed = newTodo.Completed };
+        // Create a new TodoItem.
+        group.MapPost("/", TodosHandlers.CreateTodo);
 
-            dbContext.Todos.Add(todo);
-            await dbContext.SaveChangesAsync();
+        // Update a TodoItem with specified id.
+        group.MapPut(id, TodosHandlers.PutTodo);
 
-            return Results.Created();
-        });
+        // Update a TodoItem with specified id.
+        group.MapPatch(id, TodosHandlers.PutTodo);
 
-        // PUT
-        group.MapPut("/{id}", async (string id, PutTodoItemDto updateTodo, TodoContext dbContext) =>
-        {
-            TodoItem? existingTodo = await dbContext.Todos.FindAsync(id);
-
-            if (existingTodo is null)
-            {
-                return Results.NotFound();
-            }
-
-            dbContext.Entry(existingTodo).CurrentValues.SetValues(new TodoItem() { Id = id, Title = updateTodo.Title, Completed = updateTodo.Completed });
-            await dbContext.SaveChangesAsync();
-
-            return Results.NoContent();
-        });
-
-        // DELETE 
-        group.MapDelete("/{id}", async (string id, TodoContext dbContext) =>
-        {
-            await dbContext.Todos
-             .Where(todo => String.Equals(todo.Id, id))
-             .ExecuteDeleteAsync();
-
-            return Results.NoContent();
-        });
+        // Delete a TodoItem with specified id.
+        group.MapDelete(id, TodosHandlers.DeleteTodo);
 
         return group;
     }

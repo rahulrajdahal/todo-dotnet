@@ -127,3 +127,12 @@
 /home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/obj/Debug/net8.0/Todo.Api.pdb
 /home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/obj/Debug/net8.0/Todo.Api.genruntimeconfig.cache
 /home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/obj/Debug/net8.0/ref/Todo.Api.dll
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/obj/Debug/net8.0/Todo.Api.sourcelink.json
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/bin/Debug/net8.0/Microsoft.OpenApi.dll
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/obj/Debug/net8.0/Todo.Api.MvcApplicationPartsAssemblyInfo.cs
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/bin/Debug/net8.0/dotenv.net.dll
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/bin/Debug/net8.0/Todo.Api.xml
+/home/rahulrajdahal/programming/personal/c#/Todo/Todo.Api/obj/Debug/net8.0/Todo.Api.xml

@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Todo.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Todo.Api.Data.DataExtensions">
+            <summary>
+            Extends the Database
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Data.DataExtensions.MigrateDbAsync(Microsoft.AspNetCore.Builder.WebApplication)">
+            <summary>
+            Creates the database instance
+            </summary>
+        </member>
+        <member name="T:Todo.Api.Data.TodoContext">
+            <summary>
+            The database context
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Data.TodoContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Todo.Api.Data.TodoContext})">
+            <summary>
+            The database context
+            </summary>
+        </member>
+        <member name="P:Todo.Api.Data.TodoContext.Todos">
+            <summary>
+            Collection of TodoItems.
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Data.TodoContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Override the the database instances on database creation. 
+            </summary>
+        </member>
+        <member name="T:Todo.Api.Dtos.CreateTodoItemDto">
+            <summary>
+            Contains information about the TodoItem being created.
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Dtos.CreateTodoItemDto.#ctor(System.String,System.Boolean)">
+            <summary>
+            Contains information about the TodoItem being created.
+            </summary>
+        </member>
+        <member name="T:Todo.Api.Dtos.PatchTodoItemDto">
+            <summary>
+            Contains information about the TodoItem being updated.
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Dtos.PatchTodoItemDto.#ctor(System.String,System.Boolean)">
+            <summary>
+            Contains information about the TodoItem being updated.
+            </summary>
+        </member>
+        <member name="T:Todo.Api.Dtos.PutTodoItemDto">
+            <summary>
+            Contains information about the TodoItem being updated.
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Dtos.PutTodoItemDto.#ctor(System.String,System.Boolean)">
+            <summary>
+            Contains information about the TodoItem being updated.
+            </summary>
+        </member>
+        <member name="T:Todo.Api.Dtos.TodoItemDto">
+            <summary>
+            Contains information about the TodoItem.
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Dtos.TodoItemDto.#ctor(System.String,System.String,System.Boolean,System.DateTime,System.DateTime)">
+            <summary>
+            Contains information about the TodoItem.
+            </summary>
+        </member>
+        <member name="T:Todo.Api.Endpoints.TodosEndpoints">
+            <summary>
+            The endpoints for TodoItems
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Endpoints.TodosEndpoints.MapTodosEndpoints(Microsoft.AspNetCore.Builder.WebApplication)">
+            <summary>
+            Route Group for TodoItems
+            </summary>
+            <returns>The Route Group for TodosEndpoints</returns>
+        </member>
+        <member name="T:Todo.Api.Entities.TodoItem">
+            <summary>
+            Model for the TodoItem
+            </summary>
+        </member>
+        <member name="P:Todo.Api.Entities.TodoItem.Id">
+            <summary>
+            The Identifier of the TodoItem
+            </summary>
+        </member>
+        <member name="P:Todo.Api.Entities.TodoItem.Title">
+            <summary>
+            The title of the TodoItem
+            </summary>
+        </member>
+        <member name="P:Todo.Api.Entities.TodoItem.Completed">
+            <summary>
+            The status of the TodoItem
+            </summary>
+        </member>
+        <member name="P:Todo.Api.Entities.TodoItem.CreatedAt">
+            <summary>
+            The DateTime for when the TodoItem was created.
+            </summary>
+        </member>
+        <member name="P:Todo.Api.Entities.TodoItem.UpdatedAt">
+            <summary>
+            The DateTime for when the TodoItem was updated.
+            </summary>
+        </member>
+        <member name="M:Todo.Api.Handlers.TodosHandlers.GetAllTodos(Todo.Api.Data.TodoContext)">
+            <summary> 
+            Get a list of Todos
+            </summary>
+            <returns> List of Todos </returns>
+            <response code="200">OK - Returns a list of Todos</response>
+        </member>
+        <member name="M:Todo.Api.Handlers.TodosHandlers.GetTodo(System.String,Todo.Api.Data.TodoContext)">
+            <summary> Get a TodoItem with specified id </summary>
+            <returns> TodoItem for the specified id </returns>
+            <param name="id"></param>
+            <response code="200">Success - OK, Returns TodoItem for the specified TodoItem</response>
+            <response code="404">Error - Not Found</response>
+        </member>
+        <member name="M:Todo.Api.Handlers.TodosHandlers.CreateTodo(Todo.Api.Dtos.CreateTodoItemDto,Todo.Api.Data.TodoContext)">
+            <summary> Create a new TodoItem. </summary>
+            <returns> A newly created TodoItem </returns>
+            <remarks>
+                Example Request:
+                    {
+                        "title": "Example task title"
+                    }
+            </remarks>
+            <response code="201">Success - Created, Returns the newly created TodoItem.</response>
+        </member>
+        <member name="M:Todo.Api.Handlers.TodosHandlers.PutTodo(System.String,Todo.Api.Dtos.PutTodoItemDto,Todo.Api.Data.TodoContext)">
+            <summary> Update a TodoItem with specified id </summary>
+            <returns> Empty Content </returns>
+            <param name="id"></param>
+            <remarks>
+                Example Request:
+                    {
+                        "title": "Example task title."
+                    }
+            </remarks>
+            <response code="204">Success - No Content</response>
+            <response code="404">Error - Not Found</response>
+        </member>
+        <member name="M:Todo.Api.Handlers.TodosHandlers.PatchTodo(System.String,Todo.Api.Dtos.PatchTodoItemDto,Todo.Api.Data.TodoContext)">
+            <summary> Update a TodoItem with specified id </summary>
+            <returns> Empty Content </returns>
+            <param name="id"></param>
+            <remarks>
+                Example Request:
+                    {
+                        "title": "Example task title"
+                    }
+            </remarks>
+            <response code="204">Success - No Content</response>
+            <response code="404">Error - Not Found</response>
+        </member>
+        <member name="M:Todo.Api.Handlers.TodosHandlers.DeleteTodo(System.String,Todo.Api.Data.TodoContext)">
+            <summary> Delete a TodoItem with specified id </summary>
+            <returns> Empty Content </returns>
+            <param name="id"></param>
+            <response code="204">Success - No Content</response>
+        </member>
+        <member name="T:Todo.Api.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:Todo.Api.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Todo.Api.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Todo.Api.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
